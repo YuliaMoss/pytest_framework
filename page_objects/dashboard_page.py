@@ -14,10 +14,10 @@ class DashboardPage:
     __loc_my_info = (By.XPATH, "//*[contains(@href, 'viewMyDetails')]")
     __loc_cards = (By.XPATH, "//div[contains(@class, 'oxd-sheet--white orangehrm-dashboard-widget')]")
     __loc_main_menu = (By.XPATH, "//ul[contains(@class, 'oxd-main-menu')]")
-    __loc_buttons_on_card_quick_launch = (By.XPATH, "//div[contains(@class, 'oxd-grid-3 orangehrm-quick-launch')]")
+    __loc_buttons_on_card_quick_launch = (By.XPATH,
+                                          "//p[contains(@class, 'oxd-text oxd-text--p --text')]")
     __loc_admin = (By.XPATH, "//*[contains(@href, 'admin')]")
-    __loc_buttons_on_card_buzz_posts = (By.XPATH, ("(//div[contains(@class, 'oxd-sheet oxd-sheet--rounded oxd-sheet--"
-                                                   "white orangehrm-dashboard-widget')])[4]"))
+    __loc_buttons_on_card_buzz_title = (By.XPATH, "(//p[contains(@class, 'oxd-text oxd-text--p')])[19]")
 
     def is_logo_displayed(self):
         return self._page.is_displayed(self.__loc_logo)
@@ -45,5 +45,5 @@ class DashboardPage:
         return AdminUserManagement(self._page.driver)
 
     def get_card_text(self):
-        data = self._page.get_text(self.__loc_buttons_on_card_buzz_posts)
+        data = self._page.get_text(self.__loc_buttons_on_card_buzz_title)
         return data

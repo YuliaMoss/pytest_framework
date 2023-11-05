@@ -40,9 +40,9 @@ class BasePage:
 
     def clear_input(self, locator: tuple):
         el = self.wait_element_is_visible(locator)
+        el.click()
         # the clear() method doesn't remove information from the cell
-        el.send_keys(Keys.CONTROL + "a")
-        el.send_keys(Keys.DELETE)
+        el.send_keys(Keys.BACKSPACE * 15)
         return self
 
     def get_text(self, locator: tuple):
@@ -65,7 +65,6 @@ class BasePage:
         self.driver.get_screenshot_as_file('screen.png')
 
     def get_attribute(self, locator: tuple):
+        self.wait_element_is_present(locator)
         el = self.driver.find_element(*locator)
         return el.get_attribute('value')
-
-

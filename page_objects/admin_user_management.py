@@ -1,5 +1,6 @@
 from selenium.webdriver.common.by import By
 from page_objects.base_page import BasePage
+from utilities.waiter import wait_until
 
 
 class AdminUserManagement:
@@ -17,10 +18,10 @@ class AdminUserManagement:
         return self._page.is_displayed(self.__loc_add_button)
 
     def get_records_text(self):
-        data = self._page.get_text(self.__loc_records)
-        return data
+        if wait_until(lambda: len(self._page.get_text(self.__loc_records)) > 0):
+            return self._page.get_text(self.__loc_records)
 
     def count_records(self):
-        data = self._page.get_element_count(self.__loc_items)
-        return data
+        return self._page.get_element_count(self.__loc_items)
+
 

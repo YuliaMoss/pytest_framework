@@ -1,3 +1,4 @@
+from selenium.webdriver import Keys
 from selenium.webdriver.common.by import By
 from page_objects.base_page import BasePage
 
@@ -59,6 +60,7 @@ class MyInfoPage:
         return data
 
     def click_radio_button_gender(self):
+        self._page.wait_element_is_visible(self.__loc_radio_button)
         self._page.click_radio_button(self.__loc_radio_button)
         return self.click_submit_button()
 
