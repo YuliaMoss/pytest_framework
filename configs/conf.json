@@ -1,0 +1,11 @@
+{
+  "url": "https://opensource-demo.orangehrmlive.com/web/index.php/auth/login",
+  "user_data": {
+    "login": "Admin",
+    "password": "admin123"
+  },
+  "browser_id": "1",
+  "firstname": "Anya",
+  "middle_name": "Marie",
+  "lastname": "Taylor"
+}

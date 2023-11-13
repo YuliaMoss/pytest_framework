@@ -1,14 +1,49 @@
+import json
 import pytest
+import yaml
+from yaml import FullLoader
+
+from constants import ROOT_PATH
 from page_objects.login_page import LoginPage
 from utilities.config_reader import AppConfig
 from utilities.driver_factory import DriverFactory
+from utilities.json_to_dict import DictToClass
+
+
+# def pytest_addoption(parser):
+#     parser.addoption('--env', action='store', default='dev', help='Choose your env')
+
+
+def pytest_configure(config):
+    config.addinivalue_line(
+        "markers", "smoke: mark test smoke"
+    )
+
+    config.addinivalue_line(
+        "markers", "sanity: mark test sanity"
+    )
 
 
 @pytest.fixture
-def create_driver():
-    driver = DriverFactory(AppConfig.browser_id).get_driver()
+def env():
+    with open(f'{ROOT_PATH}/configs/conf.json') as f:
+        conf_dict = json.loads(f.read())
+        return DictToClass(**conf_dict)
+
+
+@pytest.fixture
+def env_yaml(request):
+    _env_name = request.config.getoption('--env')
+    with open(f'{ROOT_PATH}/configs/dev.yaml') as f:
+        conf_dict = yaml.load(f.read(), Loader=FullLoader)
+        return DictToClass(**conf_dict)
+
+
+@pytest.fixture
+def create_driver(env):
+    driver = DriverFactory(env.browser_id).get_driver()
     driver.maximize_window()
-    driver.get(AppConfig.app_url)
+    driver.get(env.url)
     yield driver
     driver.quit()
 
@@ -19,13 +54,15 @@ def open_login_page(create_driver):
 
 
 @pytest.fixture
-def get_user():
-    return AppConfig.login, AppConfig.password
+def get_user(env):
+    return env.user_data.login, env.user_data.password
 
 
 @pytest.fixture
-def get_name():
-    return AppConfig.firstname, AppConfig.middle_name, AppConfig.lastname
+def get_name(env):
+    return (env.firstname,
+            env.middle_name,
+            env.lastname)
 
 
 @pytest.fixture
