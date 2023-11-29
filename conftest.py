@@ -10,8 +10,8 @@ from utilities.driver_factory import DriverFactory
 from utilities.json_to_dict import DictToClass
 
 
-# def pytest_addoption(parser):
-#     parser.addoption('--env', action='store', default='dev', help='Choose your env')
+def pytest_addoption(parser):
+    parser.addoption('--env', action='store', default='dev', help='Choose your env')
 
 
 def pytest_configure(config):
@@ -25,7 +25,8 @@ def pytest_configure(config):
 
 
 @pytest.fixture
-def env():
+def env(request):
+    _env_name = request.config.getoption('--env')
     with open(f'{ROOT_PATH}/configs/conf.json') as f:
         conf_dict = json.loads(f.read())
         return DictToClass(**conf_dict)
