@@ -7,5 +7,8 @@
   "browser_id": "1",
   "firstname": "Anya",
   "middle_name": "Marie",
-  "lastname": "Taylor"
+  "lastname": "Taylor",
+  "db_param": {
+    "path": "/db/test.db"
+  }
 }
