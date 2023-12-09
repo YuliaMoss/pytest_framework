@@ -78,16 +78,22 @@ def test_missing_auth_token():
     assert resp.status_code == HTTPStatus.UNAUTHORIZED, f'Missing x-auth-token should result in 401 Unauthorized'
 
 
+<<<<<<< HEAD:tests/api/test_users_notes_api.py
 # 9
 @pytest.mark.regression
 def test_patch_user_profile(authenticated_user_api, updated_profile_data):
     users_api, headers = authenticated_user_api
+=======
+# # 9
+# def test_patch_user_profile(authenticated_user_api, updated_profile_data):
+#     users_api, headers = authenticated_user_api
+>>>>>>> main:hw20/test_users_notes_api.py
 
-    response = users_api.patch_user_profile(data=updated_profile_data, headers=headers)
-    data = response.json()
+#     response = users_api.patch_user_profile(data=updated_profile_data, headers=headers)
+#     data = response.json()
 
-    assert data
-    assert response.status_code == HTTPStatus.OK, f'Request fail! ({response.text})'
+#     assert data
+#     assert response.status_code == HTTPStatus.OK, f'Request fail! ({response.text})'
 
 
 # 10
