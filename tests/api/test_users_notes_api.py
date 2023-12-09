@@ -5,9 +5,11 @@ Add API testing to your test framework (BaseAPI, API collection)
 Write several API tests (minimum 10)"""
 from http import HTTPStatus
 from api_collections.users_api_notes import UsersApi
+import pytest
 
 
 # 1
+@pytest.mark.smoke
 def test_post_new_user(get_fake_user_payload):
     payload = get_fake_user_payload
     resp = UsersApi().post_new_users_register(user_data=payload)
@@ -17,6 +19,7 @@ def test_post_new_user(get_fake_user_payload):
 
 
 # 2
+@pytest.mark.regression
 def test_post_new_user_with_invalid_password(get_fake_invalid_user_payload_invalid_password):
     payload = get_fake_invalid_user_payload_invalid_password
     resp = UsersApi().post_new_users_register(user_data=payload)
@@ -24,6 +27,7 @@ def test_post_new_user_with_invalid_password(get_fake_invalid_user_payload_inval
 
 
 # 3
+@pytest.mark.smoke
 def test_post_new_user_with_invalid_email(get_fake_user_payload_invalid_email):
     payload = get_fake_user_payload_invalid_email
     resp = UsersApi().post_new_users_register(user_data=payload)
@@ -31,6 +35,7 @@ def test_post_new_user_with_invalid_email(get_fake_user_payload_invalid_email):
 
 
 # 4
+@pytest.mark.regression
 def test_users_login(get_user_payload_for_login):
     payload = get_user_payload_for_login
     resp = UsersApi().post_login_users(user_data=payload)
@@ -38,6 +43,7 @@ def test_users_login(get_user_payload_for_login):
 
 
 # 5
+@pytest.mark.smoke
 def test_users_login_invalid_email(get_invalid_user_email_for_login):
     payload = get_invalid_user_email_for_login
     resp = UsersApi().post_login_users(user_data=payload)
@@ -45,6 +51,7 @@ def test_users_login_invalid_email(get_invalid_user_email_for_login):
 
 
 # 6
+@pytest.mark.regression
 def test_users_login_invalid_password(get_invalid_user_password_for_login):
     payload = get_invalid_user_password_for_login
     resp = UsersApi().post_login_users(user_data=payload)
@@ -52,6 +59,7 @@ def test_users_login_invalid_password(get_invalid_user_password_for_login):
 
 
 # 7
+@pytest.mark.smoke
 def test_get_users_profile(authenticated_user_api):
     users_api, headers = authenticated_user_api
 
@@ -63,6 +71,7 @@ def test_get_users_profile(authenticated_user_api):
 
 
 # 8
+@pytest.mark.smoke
 def test_missing_auth_token():
     users_api = UsersApi()
     resp = users_api.get_users_profile(headers={'Cookie': 'express:sess=...'})
@@ -70,6 +79,7 @@ def test_missing_auth_token():
 
 
 # 9
+@pytest.mark.regression
 def test_patch_user_profile(authenticated_user_api, updated_profile_data):
     users_api, headers = authenticated_user_api
 
@@ -81,6 +91,7 @@ def test_patch_user_profile(authenticated_user_api, updated_profile_data):
 
 
 # 10
+@pytest.mark.smoke
 def test_patch_user_profile_without_name(authenticated_user_api, updated_profile_data_without_name):
     users_api, headers = authenticated_user_api
 

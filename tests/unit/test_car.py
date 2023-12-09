@@ -10,6 +10,7 @@ def test_change_model(get_new_car):
     assert new_car.model == expected_model
 
 
+@pytest.mark.regression
 def test_miles_limit_zero(get_new_car):
     new_car = get_new_car
     expected_result = new_car.miles_limit
