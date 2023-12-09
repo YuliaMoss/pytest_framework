@@ -1,17 +1,30 @@
 import json
 import pytest
-import yaml
+from faker import Faker
 from yaml import FullLoader
-
+import yaml
 from constants import ROOT_PATH
 from page_objects.login_page import LoginPage
-from utilities.config_reader import AppConfig
 from utilities.driver_factory import DriverFactory
 from utilities.json_to_dict import DictToClass
+import allure
+
+
+@pytest.hookimpl(tryfirst=True, hookwrapper=True)
+def pytest_runtest_makereport(item):
+    # execute all other hooks to obtain the report object
+    outcome = yield
+    rep = outcome.get_result()
+    # set a report attribute for each phase of a call, which can
+    # be "setup", "call", "teardown"
+    setattr(item, "rep_" + rep.when, rep)
 
 
 def pytest_addoption(parser):
     parser.addoption('--env', action='store', default='dev', help='Choose your env')
+    parser.addoption('--hub', action='store', default='True', help='Run test in container Selenoid')
+    parser.addoption('--headless', action='store', default='False', help='Run test in headless mode')
+    # parser.addoption('--browser', action='store', default='2', help='Choose yor browser (1- chrome, 2 -firefox)')
 
 
 def pytest_configure(config):
@@ -41,11 +54,19 @@ def env_yaml(request):
 
 
 @pytest.fixture
-def create_driver(env):
-    driver = DriverFactory(env.browser_id).get_driver()
+def create_driver(env, request):
+    driver = DriverFactory(
+        browser_id=env.browser_id,
+        hub=eval(request.config.getoption('--hub')),
+        headless=eval(request.config.getoption('--headless'))
+    ).get_driver()
     driver.maximize_window()
     driver.get(env.url)
     yield driver
+    if request.node.rep_call.failed:
+        allure.attach(driver.get_screenshot_as_png(),
+                      name='Fail_screenshot',
+                      attachment_type=allure.attachment_type.PNG)
     driver.quit()
 
 
@@ -76,3 +97,9 @@ def open_admin_user_management_page(open_login_page, get_user):
 def open_my_info(open_login_page, get_user):
     my_info_page = open_login_page.do_login(*get_user)
     return my_info_page.click_my_info()
+
+
+@pytest.fixture
+def fake():
+    fake = Faker()
+    return fake
