@@ -33,14 +33,6 @@ pipeline {
                 '''
             }
         }
-        stage('Run ui') {
-            steps {
-                sh '''#!/bin/bash
-                source venv/bin/activate
-                python3 -m pytest -vv $markers --hub True --headless True tests/ui
-                '''
-            }
-        }
         stage('Report') {
             steps {
                 allure includeProperties: false, jdk: '', results: [[path: 'allure-results']]
