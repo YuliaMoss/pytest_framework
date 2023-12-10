@@ -23,7 +23,7 @@ def pytest_runtest_makereport(item):
 def pytest_addoption(parser):
     parser.addoption('--env', action='store', default='dev', help='Choose your env')
     parser.addoption('--hub', action='store', default='True', help='Run test in container Selenoid')
-    parser.addoption('--headless', action='store', default='False', help='Run test in headless mode')
+    parser.addoption('--headless', action='store', default='True', help='Run test in headless mode')
     # parser.addoption('--browser', action='store', default='2', help='Choose yor browser (1- chrome, 2 -firefox)')
 
 
